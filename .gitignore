@@ -1,0 +1,5 @@
+/.idea
+venv
+libraryManager/migrations
+*__pycache__*
+*.iml
