@@ -3,3 +3,4 @@ venv
 libraryManager/migrations
 *__pycache__*
 *.iml
+db.sqlite3
