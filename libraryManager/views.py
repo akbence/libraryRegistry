@@ -1,15 +1,17 @@
 from django.shortcuts import render
 from django.http import response
+from django.template import loader
 
 from libraryManager.models import Book
 
 
 def index(request):
     all_books = Book.objects.all()
-    html = ''
-    for book in all_books:
-        html += '<h2>' + book.author + ' - ' + book.title + '</h2>'
-    return response.HttpResponse("<h1>Library<h1>"+html)
+    template = loader.get_template('libraryManager/index.html')
+    context = {
+        'all_books': all_books
+    }
+    return response.HttpResponse(template.render(context,request))
 
 
 def detail(request, book_id):
