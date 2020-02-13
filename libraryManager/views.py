@@ -14,4 +14,8 @@ def index(request):
 
 def detail(request, book_id):
 
-    return response.HttpResponse(book_id)
+    detailed_book = Book.objects.get(pk=book_id)
+    context = {
+        'book': detailed_book
+    }
+    return render(request, 'libraryManager/detail.html', context)
