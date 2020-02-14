@@ -4,8 +4,8 @@ from . import views
 app_name = 'libraryManager'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('book/<int:book_id>', views.detail, name='detail'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('book/<pk>', views.DetailView.as_view(), name='detail'),
     path('book/<int:book_id>/flag', views.flag, name='readflag'),
-    path('book/add', views.detail, name='add'),
+    path('book/add', views.add, name='add'),
 ]

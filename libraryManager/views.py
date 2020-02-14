@@ -1,23 +1,19 @@
 from django.shortcuts import render, get_object_or_404
+from django.views import generic
 
 from libraryManager.models import Book
 
+class IndexView(generic.ListView):
+    template_name = 'libraryManager/index.html'
+    context_object_name = 'all_books'
 
-def index(request):
-    all_books = Book.objects.all()
-    context = {
-        'all_books': all_books
-    }
-    return render(request, 'libraryManager/index.html', context)
+    def get_queryset(self):
+        return Book.objects.all()
 
-
-def detail(request, book_id):
-    detailed_book = Book.objects.get(pk=book_id)
-    context = {
-        'book': detailed_book
-    }
-    return render(request, 'libraryManager/detail.html', context)
-
+class DetailView(generic.DetailView):
+    model = Book
+    template_name = 'libraryManager/detail.html'
+    context_object_name = 'book'
 
 def flag(request, book_id):
     print(book_id)
@@ -28,3 +24,7 @@ def flag(request, book_id):
         'book': detailed_book
     }
     return render(request, 'libraryManager/detail.html', context)
+
+
+def add(request,book):
+    return None

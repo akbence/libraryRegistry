@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -13,5 +13,9 @@ class Book(models.Model):
     page = models.PositiveIntegerField()
     already_read = models.BooleanField(default=False)
     date_of_read = models.DateField()
+
+    def get_absolute_url(self):
+        return reverse('libraryManager:detail', kwargs={'pk':self.pk})
+
     def __str__(self):
         return str(self.author) + ' - ' + str(self.title)
