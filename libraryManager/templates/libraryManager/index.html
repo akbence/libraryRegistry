@@ -1,9 +1,23 @@
-{% if all_books %}
-    <u1>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<div class="container-fluid">
+    <h3>Library homepage</h3>
+    <p>From here you can see your own list of books in your library</p>
+    <a class="nav-link" href="{% url 'libraryManager:add'%}">Here you can add more books</a>
+    <p>Each of the lines points to a detailed element</p>
+</div>
+
+
+<nav class="navbar navbar-expand-sm bg-light">
+    <ul class="navbar-nav">
+        {% if all_books %}
         {% for book in all_books %}
-        <li><a href="{% url 'libraryManager:detail' book.id%}"> {{ book.title }} </a></li>
-        {% endfor %}
-    </u1>
-{% else %}
-    <h2>You dont have any books</h2>
-{% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'libraryManager:detail' book.id%}"> {{ book.title }}</a>
+        </li>
+        {%endfor%}
+        {% else %}
+        <h2>You dont have any books</h2>
+        {% endif %}
+    </ul>
+</nav>
