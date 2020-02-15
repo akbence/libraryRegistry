@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -105,3 +105,8 @@ class LoginFormView(View):
                         return redirect(request.GET.get('next'))
                     return redirect('libraryManager:index')
         return render(request, self.template_name, {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('libraryManager:index')

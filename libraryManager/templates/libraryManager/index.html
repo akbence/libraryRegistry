@@ -5,6 +5,9 @@
     <p>From here you can see your own list of books in your library</p>
     <a class="nav-link" href="{% url 'libraryManager:add-form'%}">Here you can add more books</a>
     <p>Each of the lines points to a detailed element</p>
+    {% if user.is_authenticated %}
+    <a class="nav-link" href="{% url 'libraryManager:logout'%}">Logout</a>
+    {% endif %}
 </div>
 
 
