@@ -1,12 +1,21 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
+
+from libraryManager.soft_delete_query_set import SoftDeletableManager
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
+
     def __str__(self):
         return str(self.name)
 
+
 class Book(models.Model):
+    objects = SoftDeletableManager()
+    archive_objects = models.Manager()
+    deleted_ts = models.DateTimeField(null=True)
     author = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -20,3 +29,12 @@ class Book(models.Model):
 
     def __str__(self):
         return str(self.author) + ' - ' + str(self.title)
+
+    def delete(self):
+        """Softly delete the entry"""
+        self.deleted_ts = timezone.now()
+        self.save()
+
+    def hard_delete(self):
+        """Remove the entry from the database permanently"""
+        super().delete()
