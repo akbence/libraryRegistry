@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import View
 
-from libraryManager.forms import UserForm
+from libraryManager.forms import RegisterForm, LoginForm
 from libraryManager.models import Book
 
 
@@ -48,14 +48,14 @@ class BookDelete(generic.DeleteView):
     success_url = reverse_lazy('libraryManager:index')
 
 
-class UserFormView(View):
-    form_class = UserForm
-    template_name = 'libraryManager/registration_form.html'
+class RegisterFormView(View):
+    form_class = RegisterForm
+    template_name = 'libraryManager/account_form.html'
 
     # display blank form
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'register': True})
 
     # process form data
     def post(self, request):
@@ -74,5 +74,34 @@ class UserFormView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    return redirect('libraryManager:index')
+        return render(request, self.template_name, {'form': form})
+
+
+class LoginFormView(View):
+    form_class = LoginForm
+    template_name = 'libraryManager/account_form.html'
+
+    # display blank form
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form, 'login': True})
+
+    # process form data
+    def post(self, request):
+        form = self.form_class(request.POST)
+        print("here we are")
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            # returns User objects if credentials are correct
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    if request.GET.get('next'):
+                        return redirect(request.GET.get('next'))
                     return redirect('libraryManager:index')
         return render(request, self.template_name, {'form': form})
