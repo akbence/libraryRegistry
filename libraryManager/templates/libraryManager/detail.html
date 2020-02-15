@@ -6,8 +6,3 @@
 {% if book.already_read %}
 <h2>Date of read: {{book.date_of_read}}</h2>
 {% endif %}
-
-<form action="{%url 'libraryManager:readflag' book.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Change read flag">
-</form>
