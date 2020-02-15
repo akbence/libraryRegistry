@@ -3,6 +3,7 @@ from django.views import generic
 
 from libraryManager.models import Book
 
+
 class IndexView(generic.ListView):
     template_name = 'libraryManager/index.html'
     context_object_name = 'all_books'
@@ -10,10 +11,12 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return Book.objects.all()
 
+
 class DetailView(generic.DetailView):
     model = Book
     template_name = 'libraryManager/detail.html'
     context_object_name = 'book'
+
 
 def flag(request, book_id):
     print(book_id)
@@ -26,5 +29,6 @@ def flag(request, book_id):
     return render(request, 'libraryManager/detail.html', context)
 
 
-def add(request,book):
-    return None
+class BookCreate(generic.CreateView):
+    model = Book
+    fields = ['title', 'author', 'category', 'page', 'already_read', 'date_of_read']
