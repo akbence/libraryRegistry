@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import generic
 
 from libraryManager.models import Book
@@ -32,3 +33,13 @@ def flag(request, book_id):
 class BookCreate(generic.CreateView):
     model = Book
     fields = ['title', 'author', 'category', 'page', 'already_read', 'date_of_read']
+
+
+class BookUpdate(generic.UpdateView):
+    model = Book
+    fields = ['title', 'author', 'category', 'page', 'already_read', 'date_of_read']
+
+
+class BookDelete(generic.DeleteView):
+    model = Book
+    success_url = reverse_lazy('libraryManager:index')
