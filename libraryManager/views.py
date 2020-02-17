@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import View
 
-from libraryManager.forms import RegisterForm, LoginForm
+from libraryManager.forms import RegisterForm, LoginForm, QueryForm
 from libraryManager.models import Book
 
 
@@ -14,6 +14,37 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return Book.objects.all()
+
+
+class QueryView(View):
+    template_name = 'libraryManager/sorted_filtered_list.html'
+    #    context_object_name = 'books'
+    form_class = QueryForm
+
+    # display blank form
+    def get(self, request):
+        form = self.form_class(None)
+        print(form.fields)
+        return render(request, self.template_name, {'form': form})
+
+    # process form data
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            order_by_title = '' if form.data.get('order') == 'asc' else '-'
+            order_by_title += 'title'
+            title = form.data.get('title')
+            category = form.data.get('category')
+            author = form.data.get('author')
+            if form.data.get('only_read'):
+                books = Book.objects.filter(title__contains=title, author__contains=author, already_read=True).order_by(
+                    order_by_title)
+            else:
+                books = Book.objects.filter(title__contains=title, author__contains=author).order_by(order_by_title)
+            print(books)
+            return render(request, self.template_name, {'form': form, 'books': books})
+        return render(request, self.template_name, {'form': form})
 
 
 class DetailView(generic.DetailView):

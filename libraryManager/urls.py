@@ -6,6 +6,7 @@ app_name = 'libraryManager'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('query', views.QueryView.as_view(), name='query'),
     path('login', views.LoginFormView.as_view(), name='login'),
     path('logout', views.logout_view, name='logout'),
     path('register', views.RegisterFormView.as_view(), name='register'),

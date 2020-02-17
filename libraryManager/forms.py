@@ -13,3 +13,10 @@ class RegisterForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+
+class QueryForm(forms.Form):
+    title = forms.CharField(label='Title', required=False)
+    category = forms.CharField(label='Category', required=False)
+    author = forms.CharField(label='Author', required=False)
+    only_read = forms.BooleanField(label="Only read", required=False)

@@ -22,7 +22,7 @@ class Book(models.Model):
     page = models.PositiveIntegerField()
     already_read = models.BooleanField(default=False)
     date_of_read = models.DateField(default=None, null=True, blank=True)
-    date_of_create = models.DateField(default=None)
+    date_of_create = models.DateField(default=timezone.now())
 
     def get_absolute_url(self):
         return reverse('libraryManager:detail', kwargs={'pk': self.pk})
